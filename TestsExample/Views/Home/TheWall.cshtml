@@ -1,0 +1,22 @@
+﻿@model IEnumerable<TestsExample.Models.PostViewModel>
+
+@{
+    ViewData["Title"] = "Стена";
+}
+
+<h1 class="text-center">Стена</h1>
+<div class="container">
+    @foreach (var post in Model)
+    {
+        <div class="card mb-4" style="margin: 0 auto; width: 50%;">
+            <div class="card-header">
+                <strong>@post.Author</strong>
+                <small class="text-muted">@post.PublicationDateTime.ToShortDateString()</small>
+            </div>
+            <div class="card-body">
+                <h2 class="card-title">@post.Title</h2>
+                <p class="card-text">@post.Content</p>
+            </div>
+        </div>
+    }
+</div>

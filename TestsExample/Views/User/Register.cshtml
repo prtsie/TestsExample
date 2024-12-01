@@ -1,0 +1,26 @@
+﻿@model TestsExample.Requests.RegisterRequest?
+
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<div class="container mt-5">
+    <h2>Регистрация</h2>
+    <form method="post">
+        <div class="col-3 mb-3">
+            <label asp-for="Name" class="form-label">Имя пользователя</label>
+            <input asp-for="Name" class="form-control">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="col-3 mb-3">
+            <label asp-for="Password" class="form-label">Пароль</label>
+            <input type="password" asp-for="Password" class="form-control">
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Зарегистрироваться"/>
+        @if (Model is not null)
+        {
+            <p class="text-danger">Имя пользователя уже занято</p>
+        }
+    </form>
+</div>

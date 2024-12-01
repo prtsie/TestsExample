@@ -1,0 +1,29 @@
+﻿@model TestsExample.Requests.CreatePostRequest
+
+@{
+    ViewData["Title"] = "Публикация";
+}
+
+<h2>Создать новую публикацию</h2>
+
+<form asp-action="CreatePost" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Title">Заголовок</label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="Content">Содержание</label>
+        <textarea asp-for="Content" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="Content" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="Images">Изображения</label>
+        <input type="file" asp-for="Images" class="form-control-file" multiple accept="image/*" />
+        <span asp-validation-for="Images" class="text-danger"></span>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Опубликовать</button>
+</form>
