@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using TestsExample.Helpers.Common
+@using TestsExample.Services.IdentityProvider
+@model IEnumerable<Layers.Application.Models.PostViewModel>
+@inject IIdentityProvider IdentityProvider
+
+@{
+    ViewData["Title"] = "Стена";
+}
+
+<h1 class="text-center">Стена</h1>
+<div class="container">
+    @foreach (var post in Model)
+    {
+        <form method="post" asp-controller="Home" asp-action="DeletePost" asp-route-postId="@post.Id">
+            <div class="card mb-4" style="margin: 0 auto; width: 50%;">
+                <div class="card-header">
+                    <strong>@post.Author</strong>
+                    <small class="text-muted">@post.PublicationDateTime.ToShortDateString()</small>
+                    @if (IdentityProvider.User?.GetName() == post.Author)
+                    {
+                        <input class="btn btn-sm btn-outline-danger"
+                               type="submit"
+                               value="Удалить"
+                               style="float: right"/>
+                    }
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title">@post.Title</h2>
+                    <p class="card-text">@post.Content</p>
+                </div>
+            </div>
+        </form>
+    }
+</div>

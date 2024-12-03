@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Layers.Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using TestsExample.Database.Context;
 
 namespace Repositories.Tests;
 

@@ -1,9 +1,9 @@
 ﻿using Ahatornn.TestGenerator;
 using FluentAssertions;
-using TestsExample.Database.Context;
-using TestsExample.Database.Models;
-using TestsExample.Database.Repositories.Generic;
-using TestsExample.Database.Repositories.UserRepository;
+using Layers.Application.NeededServices.Database.Repositories;
+using Layers.Infrastructure.Database;
+using Layers.Infrastructure.Database.Repositories.UserRepository;
+using TestsExample.Models;
 using Xunit;
 
 namespace Repositories.Tests.GenericRepository;
