@@ -37,6 +37,13 @@ public class HomeController : Controller
         await postsService.CreatePostAsync(createPostRequest, cancellationToken);
         return LocalRedirect("/");
     }
+    
+    [HttpPost]
+    public async Task<IActionResult> DeletePost(Guid postId,CancellationToken cancellationToken)
+    {
+        await postsService.DeletePostAsync(postId, cancellationToken);
+        return LocalRedirect("/");
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
