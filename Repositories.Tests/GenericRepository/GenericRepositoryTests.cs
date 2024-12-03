@@ -24,7 +24,7 @@ public class GenericRepositoryTests
         var user1 = TestEntityProvider.Shared.Create<User>();
         var user2 = TestEntityProvider.Shared.Create<User>();
         context.AddRange(user1, user2);
-        context.SaveChanges();
+        await context.SaveChangesAsync();
 
         var users = await repository.GetAllAsync(CancellationToken.None);
         
