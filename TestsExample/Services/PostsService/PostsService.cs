@@ -1,4 +1,6 @@
 ﻿using TestsExample.Database.Context;
+using TestsExample.Database.Exceptions;
+using TestsExample.Database.Models;
 using TestsExample.Database.Repositories.PostRepository;
 using TestsExample.Database.Repositories.UserRepository;
 using TestsExample.Exceptions.Auth;
@@ -29,12 +31,15 @@ public class PostsService : IPostsService
         this.identityProvider = identityProvider;
     }
 
-    /// <summary>
-    /// Возвращает посты из БД
-    /// </summary>
-    /// <param name="cancellationToken"> Токен отмены</param>
-    /// <returns> Массив <see cref="PostViewModel"/> </returns>
-    public async Task<IEnumerable<PostViewModel>> GetPostsAsync(CancellationToken cancellationToken)
+    /// <summary> Достаёт текущего пользователя из контекста запроса </summary>
+    private async Task<User> GetCurrentUser(CancellationToken cancellationToken)
+    {
+        var userName = identityProvider.User?.GetName() ?? throw new NotAuthorizedException();
+        var user = await usersRepository.GetByNameAsync(userName, cancellationToken) ?? throw new NotAuthorizedException();
+        return user;
+    }
+
+    async Task<IEnumerable<PostViewModel>> IPostsService.GetPostsAsync(CancellationToken cancellationToken)
     {
         var posts = await postsRepository.GetAllAsync(cancellationToken);
 
@@ -52,12 +57,27 @@ public class PostsService : IPostsService
 
     async Task IPostsService.CreatePostAsync(CreatePostRequest request, CancellationToken cancellationToken)
     {
-        var authorName = identityProvider.User?.GetName() ?? throw new NotAuthorizedException();
-        var author = await usersRepository.GetByNameAsync(authorName, cancellationToken) ?? throw new NotAuthorizedException();
-        
+        var author = await GetCurrentUser(cancellationToken);
+
         var post = request.MapToPost(author.Id);
         postsRepository.Add(post);
 
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+    }
+
+    async Task IPostsService.DeletePostAsync(Guid postId, CancellationToken cancellationToken)
+    {
+        var user = await GetCurrentUser(cancellationToken);
+        
+        var post = await postsRepository.GetByIdAsync(postId, cancellationToken) 
+                   ?? throw new EntityNotFoundByIdException<Post>(postId);
+        
+        if (post.UserId != user.Id)
+        {
+            throw new NotAuthorizedException();
+        }
+        
+        postsRepository.Remove(post);
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

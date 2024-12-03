@@ -18,4 +18,11 @@ public interface IPostsService
     /// <param name="createPostRequest"> Запрос на создание поста </param>
     /// <param name="cancellationToken"> Токен отмены </param>
     Task CreatePostAsync(CreatePostRequest createPostRequest, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Удаляет пост из БД
+    /// </summary>
+    /// <param name="postId"> Идентификатор поста </param>
+    /// <param name="cancellationToken"> Токен отмены</param>
+    Task DeletePostAsync(Guid postId, CancellationToken cancellationToken);
 }
