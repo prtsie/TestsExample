@@ -21,7 +21,4 @@ public class CreatePostRequest
         Constants.MaxPostTextLength,
         ErrorMessage = "Длина должна быть не больше {1} символов")]
     public string Content { get; set; } = null!;
-
-    /// <summary> Картинки </summary>
-    public IFormFile[]? Images { get; set; }
 }
