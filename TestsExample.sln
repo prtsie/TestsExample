@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Layers.Api", "Layers.Api\Layers.Api.csproj", "{D3BEEF6B-AFEC-4CFE-8927-9DF152218F09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories.Tests", "Repositories.Tests\Repositories.Tests.csproj", "{7624FBEA-EC78-4A79-908A-30A1A4D6E0B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Tests", "App.Tests\App.Tests.csproj", "{7624FBEA-EC78-4A79-908A-30A1A4D6E0B3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{B0A25A79-E455-40F6-809C-BB0303E34B86}"
 EndProject

@@ -6,7 +6,7 @@ using Layers.Infrastructure.Database.Repositories.UserRepository;
 using TestsExample.Models;
 using Xunit;
 
-namespace Repositories.Tests.GenericRepository;
+namespace Repositories.Tests.Repositories;
 
 public class GenericRepositoryTests
 {

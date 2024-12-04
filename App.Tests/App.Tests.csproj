@@ -4,6 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>Repositories.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,6 +22,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Layers.Api\Layers.Api.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services\" />
     </ItemGroup>
 
 </Project>
