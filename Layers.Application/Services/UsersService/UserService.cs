@@ -1,17 +1,17 @@
-﻿using Layers.Application.BusinessLogic.Services.UsersService.Exceptions;
-using Layers.Application.NeededServices.Database;
+﻿using Layers.Application.NeededServices.Database;
 using Layers.Application.NeededServices.Database.Repositories;
 using Layers.Application.Requests;
+using Layers.Application.Services.UsersService.Exceptions;
 using TestsExample.Models;
 
-namespace Layers.Application.BusinessLogic.Services.UsersService;
+namespace Layers.Application.Services.UsersService;
 
-public class UsersService : IUsersService
+public class UserService : IUserService
 {
     private readonly IUserRepository userRepository;
     private readonly IUnitOfWork unitOfWork;
 
-    public UsersService(
+    public UserService(
         IUserRepository userRepository,
         IUnitOfWork unitOfWork)
     {
@@ -19,7 +19,7 @@ public class UsersService : IUsersService
         this.unitOfWork = unitOfWork;
     }
 
-    async Task IUsersService.RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
+    async Task IUserService.RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
     {
         var foundUser = await userRepository.GetByNameAsync(request.Name, cancellationToken);
         if (foundUser is not null)
@@ -37,7 +37,7 @@ public class UsersService : IUsersService
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
-    async Task<Guid?> IUsersService.GetUserIdForLoginAsync(LoginRequest request, CancellationToken cancellationToken)
+    async Task<Guid?> IUserService.GetUserIdForLoginAsync(LoginRequest request, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByNameAsync(request.Name, cancellationToken);
         if (user is null || user.Password != request.Password)

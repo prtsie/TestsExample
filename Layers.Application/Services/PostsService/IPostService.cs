@@ -1,9 +1,9 @@
 ﻿using Layers.Application.Models;
 using Layers.Application.Requests;
 
-namespace Layers.Application.BusinessLogic.Services.PostsService;
+namespace Layers.Application.Services.PostsService;
 
-public interface IPostsService
+public interface IPostService
 {
     /// <summary>
     /// Возвращает посты из БД

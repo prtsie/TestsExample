@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
-using Layers.Application.BusinessLogic.Services.UsersService;
-using Layers.Application.BusinessLogic.Services.UsersService.Exceptions;
 using Layers.Application.Requests;
+using Layers.Application.Services.UsersService;
+using Layers.Application.Services.UsersService.Exceptions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +10,11 @@ namespace TestsExample.Controllers;
 
 public class UserController : Controller
 {
-    private readonly IUsersService usersService;
+    private readonly IUserService userService;
 
-    public UserController(IUsersService usersService)
+    public UserController(IUserService userService)
     {
-        this.usersService = usersService;
+        this.userService = userService;
     }
 
     [HttpGet]
@@ -33,7 +33,7 @@ public class UserController : Controller
 
         try
         {
-            await usersService.RegisterAsync(request, cancellationToken);
+            await userService.RegisterAsync(request, cancellationToken);
         }
         catch (UserAlreadyExistsException)
         {
@@ -56,7 +56,7 @@ public class UserController : Controller
         
         try
         {
-            var userId = await usersService.GetUserIdForLoginAsync(request, cancellationToken);
+            var userId = await userService.GetUserIdForLoginAsync(request, cancellationToken);
             
             var claims = new Claim[]
             {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using Layers.Application.BusinessLogic.Services.PostsService;
 using Layers.Application.Requests;
+using Layers.Application.Services.PostsService;
 using Microsoft.AspNetCore.Authorization;
 using TestsExample.Helpers.Common;
 using TestsExample.Models;
@@ -11,18 +11,18 @@ namespace TestsExample.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly IPostsService postsService;
+    private readonly IPostService postService;
     private readonly IIdentityProvider identityProvider;
 
-    public HomeController(IPostsService postsService, IIdentityProvider identityProvider)
+    public HomeController(IPostService postService, IIdentityProvider identityProvider)
     {
-        this.postsService = postsService;
+        this.postService = postService;
         this.identityProvider = identityProvider;
     }
 
     public async Task<IActionResult> TheWall(CancellationToken cancellationToken)
     {
-        var posts = await postsService.GetPostsAsync(cancellationToken);
+        var posts = await postService.GetPostsAsync(cancellationToken);
 
         return View(posts);
     }
@@ -41,7 +41,7 @@ public class HomeController : Controller
         {
             return View(createPostRequest);
         }
-        await postsService.CreatePostAsync(createPostRequest, identityProvider.User!.GetId()!.Value, cancellationToken);
+        await postService.CreatePostAsync(createPostRequest, identityProvider.User!.GetId()!.Value, cancellationToken);
         return LocalRedirect("/");
     }
     
@@ -49,7 +49,7 @@ public class HomeController : Controller
     [Authorize]
     public async Task<IActionResult> DeletePost(Guid postId,CancellationToken cancellationToken)
     {
-        await postsService.DeletePostAsync(postId, identityProvider.User!.GetId()!.Value, cancellationToken);
+        await postService.DeletePostAsync(postId, identityProvider.User!.GetId()!.Value, cancellationToken);
         return LocalRedirect("/");
     }
 

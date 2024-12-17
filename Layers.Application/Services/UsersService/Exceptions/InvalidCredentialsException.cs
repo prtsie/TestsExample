@@ -1,6 +1,6 @@
 ﻿using Layers.Application.Exceptions.Common;
 
-namespace Layers.Application.BusinessLogic.Services.UsersService.Exceptions;
+namespace Layers.Application.Services.UsersService.Exceptions;
 
 public class InvalidCredentialsException : TestsExampleExceptionBase
 {

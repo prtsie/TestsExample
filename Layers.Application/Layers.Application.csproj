@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="BusinessLogic\Services\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Layers.Domain\Layers.Domain.csproj" />
     </ItemGroup>
 

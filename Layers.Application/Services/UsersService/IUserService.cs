@@ -1,8 +1,8 @@
 using Layers.Application.Requests;
 
-namespace Layers.Application.BusinessLogic.Services.UsersService;
+namespace Layers.Application.Services.UsersService;
 
-public interface IUsersService
+public interface IUserService
 {
     /// <summary>
     /// Регистрирует пользователя и заносит его в БД

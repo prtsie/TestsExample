@@ -7,15 +7,15 @@ using Layers.Application.NeededServices.Database.Repositories;
 using Layers.Application.Requests;
 using TestsExample.Models;
 
-namespace Layers.Application.BusinessLogic.Services.PostsService;
+namespace Layers.Application.Services.PostsService;
 
-public class PostsService : IPostsService
+public class PostService : IPostService
 {
     private readonly IPostRepository postRepository;
     private readonly IUserRepository userRepository;
     private readonly IUnitOfWork unitOfWork;
 
-    public PostsService(
+    public PostService(
         IPostRepository postRepository,
         IUserRepository userRepository,
         IUnitOfWork unitOfWork)
@@ -25,7 +25,7 @@ public class PostsService : IPostsService
         this.unitOfWork = unitOfWork;
     }
 
-    async Task<IEnumerable<PostViewModel>> IPostsService.GetPostsAsync(CancellationToken cancellationToken)
+    async Task<IEnumerable<PostViewModel>> IPostService.GetPostsAsync(CancellationToken cancellationToken)
     {
         var posts = await postRepository.GetAllAsync(cancellationToken);
 
@@ -41,7 +41,7 @@ public class PostsService : IPostsService
         return models;
     }
 
-    async Task IPostsService.CreatePostAsync(CreatePostRequest request, Guid userId, CancellationToken cancellationToken)
+    async Task IPostService.CreatePostAsync(CreatePostRequest request, Guid userId, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByIdAsync(userId, cancellationToken) ?? throw new NotAuthorizedException();
 
@@ -51,7 +51,7 @@ public class PostsService : IPostsService
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
-    async Task IPostsService.DeletePostAsync(Guid postId, Guid userId, CancellationToken cancellationToken)
+    async Task IPostService.DeletePostAsync(Guid postId, Guid userId, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetByIdAsync(userId, cancellationToken) ?? throw new NotAuthorizedException();
         
