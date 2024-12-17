@@ -1,8 +1,7 @@
 ﻿using Layers.Application.NeededServices.Database;
 using Layers.Application.NeededServices.Database.Repositories;
 using Layers.Infrastructure.Database;
-using Layers.Infrastructure.Database.Repositories.PostRepository;
-using Layers.Infrastructure.Database.Repositories.UserRepository;
+using Layers.Infrastructure.Database.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,8 +23,8 @@ public static class DependencyInjection
         
         services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<TestsSampleDbContext>());
         
-        services.AddScoped<IUsersRepository, UsersRepository>();
-        services.AddScoped<IPostsRepository, PostsRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IPostRepository, PostRepository>();
         
         return services;
     }

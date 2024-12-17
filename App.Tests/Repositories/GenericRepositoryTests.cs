@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Layers.Application.NeededServices.Database.Repositories;
 using Layers.Infrastructure.Database;
-using Layers.Infrastructure.Database.Repositories.UserRepository;
+using Layers.Infrastructure.Database.Repositories;
 using TestsExample.Models;
 using Xunit;
 
@@ -15,7 +15,7 @@ public class GenericRepositoryTests
 
     public GenericRepositoryTests()
     {
-        repository = new UsersRepository(context, context);
+        repository = new UserRepository(context, context);
     }
 
     [Fact]

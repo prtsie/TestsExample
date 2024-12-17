@@ -5,7 +5,7 @@ namespace Layers.Application.NeededServices.Database.Repositories;
 /// <summary>
 /// Репозиторий для работы с пользователями в БД
 /// </summary>
-public interface IUsersRepository : IGenericRepository<User>
+public interface IUserRepository : IGenericRepository<User>
 {
     /// <summary> Найти пользователя в БД по имени </summary>
     /// <param name="name"> Имя пользователя</param>

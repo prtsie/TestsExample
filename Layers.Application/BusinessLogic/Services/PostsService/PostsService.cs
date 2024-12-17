@@ -11,27 +11,27 @@ namespace Layers.Application.BusinessLogic.Services.PostsService;
 
 public class PostsService : IPostsService
 {
-    private readonly IPostsRepository postsRepository;
-    private readonly IUsersRepository usersRepository;
+    private readonly IPostRepository postRepository;
+    private readonly IUserRepository userRepository;
     private readonly IUnitOfWork unitOfWork;
 
     public PostsService(
-        IPostsRepository postsRepository,
-        IUsersRepository usersRepository,
+        IPostRepository postRepository,
+        IUserRepository userRepository,
         IUnitOfWork unitOfWork)
     {
-        this.postsRepository = postsRepository;
-        this.usersRepository = usersRepository;
+        this.postRepository = postRepository;
+        this.userRepository = userRepository;
         this.unitOfWork = unitOfWork;
     }
 
     async Task<IEnumerable<PostViewModel>> IPostsService.GetPostsAsync(CancellationToken cancellationToken)
     {
-        var posts = await postsRepository.GetAllAsync(cancellationToken);
+        var posts = await postRepository.GetAllAsync(cancellationToken);
 
         var models = posts.Select(p =>
         {
-            var author = usersRepository.GetByIdAsync(p.UserId, cancellationToken).Result;
+            var author = userRepository.GetByIdAsync(p.UserId, cancellationToken).Result;
 
             return p.MapToPostViewModel(
                 author!.Name //TODO: обработка null
@@ -43,19 +43,19 @@ public class PostsService : IPostsService
 
     async Task IPostsService.CreatePostAsync(CreatePostRequest request, Guid userId, CancellationToken cancellationToken)
     {
-        var user = await usersRepository.GetByIdAsync(userId, cancellationToken) ?? throw new NotAuthorizedException();
+        var user = await userRepository.GetByIdAsync(userId, cancellationToken) ?? throw new NotAuthorizedException();
 
         var post = request.MapToPost(user.Id);
-        postsRepository.Add(post);
+        postRepository.Add(post);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     async Task IPostsService.DeletePostAsync(Guid postId, Guid userId, CancellationToken cancellationToken)
     {
-        var user = await usersRepository.GetByIdAsync(userId, cancellationToken) ?? throw new NotAuthorizedException();
+        var user = await userRepository.GetByIdAsync(userId, cancellationToken) ?? throw new NotAuthorizedException();
         
-        var post = await postsRepository.GetByIdAsync(postId, cancellationToken) 
+        var post = await postRepository.GetByIdAsync(postId, cancellationToken) 
                    ?? throw new EntityNotFoundByIdException<Post>(postId);
         
         if (post.UserId != user.Id)
@@ -63,7 +63,7 @@ public class PostsService : IPostsService
             throw new NotAuthorizedException();
         }
         
-        postsRepository.Remove(post);
+        postRepository.Remove(post);
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

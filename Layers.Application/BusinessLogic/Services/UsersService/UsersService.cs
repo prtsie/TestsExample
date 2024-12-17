@@ -8,20 +8,20 @@ namespace Layers.Application.BusinessLogic.Services.UsersService;
 
 public class UsersService : IUsersService
 {
-    private readonly IUsersRepository usersRepository;
+    private readonly IUserRepository userRepository;
     private readonly IUnitOfWork unitOfWork;
 
     public UsersService(
-        IUsersRepository usersRepository,
+        IUserRepository userRepository,
         IUnitOfWork unitOfWork)
     {
-        this.usersRepository = usersRepository;
+        this.userRepository = userRepository;
         this.unitOfWork = unitOfWork;
     }
 
     async Task IUsersService.RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
     {
-        var foundUser = await usersRepository.GetByNameAsync(request.Name, cancellationToken);
+        var foundUser = await userRepository.GetByNameAsync(request.Name, cancellationToken);
         if (foundUser is not null)
         {
             throw new UserAlreadyExistsException(request);
@@ -33,13 +33,13 @@ public class UsersService : IUsersService
             Password = request.Password
         };
 
-        usersRepository.Add(user);
+        userRepository.Add(user);
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 
     async Task<Guid?> IUsersService.GetUserIdForLoginAsync(LoginRequest request, CancellationToken cancellationToken)
     {
-        var user = await usersRepository.GetByNameAsync(request.Name, cancellationToken);
+        var user = await userRepository.GetByNameAsync(request.Name, cancellationToken);
         if (user is null || user.Password != request.Password)
         {
             throw new InvalidCredentialsException();

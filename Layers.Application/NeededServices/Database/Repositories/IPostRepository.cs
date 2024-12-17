@@ -5,4 +5,4 @@ namespace Layers.Application.NeededServices.Database.Repositories;
 /// <summary>
 /// Репозиторий для доступа к постам в БД
 /// </summary>
-public interface IPostsRepository : IGenericRepository<Post> { }
+public interface IPostRepository : IGenericRepository<Post> { }

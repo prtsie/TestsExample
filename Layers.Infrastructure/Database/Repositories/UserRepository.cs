@@ -4,12 +4,12 @@ using Layers.Infrastructure.Database.Repositories.Generic;
 using Microsoft.EntityFrameworkCore;
 using TestsExample.Models;
 
-namespace Layers.Infrastructure.Database.Repositories.UserRepository;
+namespace Layers.Infrastructure.Database.Repositories;
 
-/// <summary> <inheritdoc cref="IUsersRepository"/> </summary>
-public class UsersRepository : GenericRepository<User>, IUsersRepository
+/// <summary> <inheritdoc cref="IUserRepository"/> </summary>
+public class UserRepository : GenericRepository<User>, IUserRepository
 {
-    public UsersRepository(IGenericReader reader, IGenericWriter writer) : base(reader, writer) { }
+    public UserRepository(IGenericReader reader, IGenericWriter writer) : base(reader, writer) { }
 
     /// <summary> Найти пользователя в БД по имени </summary>
     /// <param name="name"> Имя пользователя</param>
