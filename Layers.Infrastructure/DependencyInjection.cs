@@ -15,8 +15,8 @@ public static class DependencyInjection
     /// </summary>
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfigurationRoot configuration)
     {
-        var connectionString = configuration.GetConnectionString("Default");
-        services.AddDbContext<TestsSampleDbContext>(optsBuilder => optsBuilder.UseSqlServer(connectionString));
+        var connectionString = configuration.GetConnectionString("Postgres");
+        services.AddDbContext<TestsSampleDbContext>(optsBuilder => optsBuilder.UseNpgsql(connectionString));
         
         services.AddScoped<IGenericReader>(provider => provider.GetRequiredService<TestsSampleDbContext>());
         services.AddScoped<IGenericWriter>(provider => provider.GetRequiredService<TestsSampleDbContext>());

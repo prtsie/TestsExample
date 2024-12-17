@@ -24,7 +24,7 @@ public static class PostMapping
         {
             Title = createPostRequest.Title,
             Content = createPostRequest.Content,
-            PublicationDateTime = DateTime.Now,
+            PublicationDateTime = DateTime.UtcNow,
             UserId = authorId
         };
     }
