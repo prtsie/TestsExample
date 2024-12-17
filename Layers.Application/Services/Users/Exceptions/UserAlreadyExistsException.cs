@@ -1,7 +1,7 @@
 ﻿using Layers.Application.Exceptions.Common;
 using Layers.Application.Requests;
 
-namespace Layers.Application.Services.UsersService.Exceptions;
+namespace Layers.Application.Services.Users.Exceptions;
 
 public class UserAlreadyExistsException : TestsExampleExceptionBase
 {

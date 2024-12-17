@@ -1,6 +1,6 @@
 using Layers.Application.Requests;
 
-namespace Layers.Application.Services.UsersService;
+namespace Layers.Application.Services.Users;
 
 public interface IUserService
 {

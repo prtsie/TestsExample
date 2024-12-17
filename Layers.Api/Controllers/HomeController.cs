@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Layers.Application.Requests;
-using Layers.Application.Services.PostsService;
+using Layers.Application.Services.Posts;
 using Microsoft.AspNetCore.Authorization;
 using TestsExample.Helpers.Common;
 using TestsExample.Models;

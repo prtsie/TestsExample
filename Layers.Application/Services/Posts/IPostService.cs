@@ -1,7 +1,7 @@
 ﻿using Layers.Application.Models;
 using Layers.Application.Requests;
 
-namespace Layers.Application.Services.PostsService;
+namespace Layers.Application.Services.Posts;
 
 public interface IPostService
 {

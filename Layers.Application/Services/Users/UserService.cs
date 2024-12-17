@@ -1,10 +1,10 @@
 ﻿using Layers.Application.NeededServices.Database;
 using Layers.Application.NeededServices.Database.Repositories;
 using Layers.Application.Requests;
-using Layers.Application.Services.UsersService.Exceptions;
+using Layers.Application.Services.Users.Exceptions;
 using TestsExample.Models;
 
-namespace Layers.Application.Services.UsersService;
+namespace Layers.Application.Services.Users;
 
 public class UserService : IUserService
 {

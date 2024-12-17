@@ -1,5 +1,5 @@
-﻿using Layers.Application.Services.PostsService;
-using Layers.Application.Services.UsersService;
+﻿using Layers.Application.Services.Posts;
+using Layers.Application.Services.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Layers.Application;

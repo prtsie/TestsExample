@@ -7,7 +7,7 @@ using Layers.Application.NeededServices.Database.Repositories;
 using Layers.Application.Requests;
 using TestsExample.Models;
 
-namespace Layers.Application.Services.PostsService;
+namespace Layers.Application.Services.Posts;
 
 public class PostService : IPostService
 {

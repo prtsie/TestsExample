@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Layers.Application.Requests;
-using Layers.Application.Services.UsersService;
-using Layers.Application.Services.UsersService.Exceptions;
+using Layers.Application.Services.Users;
+using Layers.Application.Services.Users.Exceptions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
