@@ -16,7 +16,7 @@
             <div class="card mb-4" style="margin: 0 auto; width: 50%;">
                 <div class="card-header">
                     <strong>@post.Author</strong>
-                    <small class="text-muted">@post.PublicationDateTime.ToShortDateString()</small>
+                    <small class="text-muted">@post.PublicationDateTime.ToLocalTime().ToString("g")</small>
                     @if (IdentityProvider.User?.GetName() == post.Author)
                     {
                         <input class="btn btn-sm btn-outline-danger"

@@ -24,8 +24,4 @@
       <ProjectReference Include="..\Layers.Api\Layers.Api.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Services\" />
-    </ItemGroup>
-
 </Project>

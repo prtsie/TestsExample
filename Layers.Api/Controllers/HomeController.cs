@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Layers.Application.Models;
 using Layers.Application.Requests;
 using Layers.Application.Services.Posts;
 using Microsoft.AspNetCore.Authorization;
@@ -20,9 +21,9 @@ public class HomeController : Controller
         this.identityProvider = identityProvider;
     }
 
-    public async Task<IActionResult> TheWall(CancellationToken cancellationToken)
+    public async Task<IActionResult> TheWall(CancellationToken cancellationToken, Sort sort = Sort.Date)
     {
-        var posts = await postService.GetPostsAsync(cancellationToken);
+        var posts = await postService.GetPostsAsync(sort, cancellationToken);
 
         return View(posts);
     }

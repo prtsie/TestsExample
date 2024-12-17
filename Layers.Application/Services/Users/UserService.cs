@@ -21,7 +21,7 @@ public class UserService : IUserService
 
     async Task IUserService.RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
     {
-        var foundUser = await userRepository.GetByNameAsync(request.Name, cancellationToken);
+        var foundUser = await userRepository.GetByName(request.Name, cancellationToken);
         if (foundUser is not null)
         {
             throw new UserAlreadyExistsException(request);
@@ -39,7 +39,7 @@ public class UserService : IUserService
 
     async Task<Guid?> IUserService.GetUserIdForLoginAsync(LoginRequest request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByNameAsync(request.Name, cancellationToken);
+        var user = await userRepository.GetByName(request.Name, cancellationToken);
         if (user is null || user.Password != request.Password)
         {
             throw new InvalidCredentialsException();

@@ -1,20 +1,29 @@
 ﻿using Layers.Application.NeededServices.Database;
 using Layers.Application.NeededServices.Database.Repositories;
-using Layers.Infrastructure.Database.Repositories.Generic;
 using Microsoft.EntityFrameworkCore;
 using TestsExample.Models;
 
 namespace Layers.Infrastructure.Database.Repositories;
 
 /// <summary> <inheritdoc cref="IUserRepository"/> </summary>
-public class UserRepository : GenericRepository<User>, IUserRepository
+public class UserRepository : IUserRepository
 {
-    public UserRepository(IGenericReader reader, IGenericWriter writer) : base(reader, writer) { }
+    private readonly IGenericReader reader;
+    private readonly IGenericWriter writer;
 
-    /// <summary> Найти пользователя в БД по имени </summary>
-    /// <param name="name"> Имя пользователя</param>
-    /// <param name="cancellationToken"> Токен отмены </param>
-    /// <returns> Пользователя или null, если пользователь не найден </returns>
-    public Task<User?> GetByNameAsync(string name, CancellationToken cancellationToken)
-        => Read().SingleOrDefaultAsync(u => u.Name == name, cancellationToken);
+    public UserRepository(IGenericReader reader, IGenericWriter writer)
+    {
+        this.reader = reader;
+        this.writer = writer;
+    }
+
+    /// <inheritdoc />
+    public async Task<User?> GetByName(string name, CancellationToken cancellationToken)
+        => await reader.Read<User>().SingleOrDefaultAsync(u => u.Name == name, cancellationToken);
+
+    /// <inheritdoc />
+    public async Task<User?> GetById(Guid id, CancellationToken cancellationToken)
+        => await reader.Read<User>().SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
+
+    public void Add(User user) => writer.Add(user);
 }

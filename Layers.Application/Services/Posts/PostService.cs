@@ -25,13 +25,13 @@ public class PostService : IPostService
         this.unitOfWork = unitOfWork;
     }
 
-    async Task<IEnumerable<PostViewModel>> IPostService.GetPostsAsync(CancellationToken cancellationToken)
+    async Task<IEnumerable<PostViewModel>> IPostService.GetPostsAsync(Sort sort, CancellationToken cancellationToken)
     {
-        var posts = await postRepository.GetAllAsync(cancellationToken);
+        var posts = await postRepository.Get(sort, cancellationToken);
 
         var models = posts.Select(p =>
-        {
-            var author = userRepository.GetByIdAsync(p.UserId, cancellationToken).Result;
+        { //todo переписать
+            var author = userRepository.GetById(p.UserId, cancellationToken).Result;
 
             return p.MapToPostViewModel(
                 author!.Name //TODO: обработка null
@@ -43,7 +43,7 @@ public class PostService : IPostService
 
     async Task IPostService.CreatePostAsync(CreatePostRequest request, Guid userId, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByIdAsync(userId, cancellationToken) ?? throw new NotAuthorizedException();
+        var user = await userRepository.GetById(userId, cancellationToken) ?? throw new NotAuthorizedException();
 
         var post = request.MapToPost(user.Id);
         postRepository.Add(post);
@@ -53,9 +53,9 @@ public class PostService : IPostService
 
     async Task IPostService.DeletePostAsync(Guid postId, Guid userId, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByIdAsync(userId, cancellationToken) ?? throw new NotAuthorizedException();
+        var user = await userRepository.GetById(userId, cancellationToken) ?? throw new NotAuthorizedException();
         
-        var post = await postRepository.GetByIdAsync(postId, cancellationToken) 
+        var post = await postRepository.GetById(postId, cancellationToken) 
                    ?? throw new EntityNotFoundByIdException<Post>(postId);
         
         if (post.UserId != user.Id)
@@ -63,7 +63,7 @@ public class PostService : IPostService
             throw new NotAuthorizedException();
         }
         
-        postRepository.Remove(post);
+        postRepository.Delete(post);
         await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }
