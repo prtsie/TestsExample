@@ -24,8 +24,13 @@ public class HomeController : Controller
     public async Task<IActionResult> TheWall(CancellationToken cancellationToken, Sort sort = Sort.Date)
     {
         var posts = await postService.GetPostsAsync(sort, cancellationToken);
+        var model = new TheWallModel
+        {
+            Posts = posts,
+            Sort = sort
+        };
 
-        return View(posts);
+        return View(model);
     }
     
     [Authorize]

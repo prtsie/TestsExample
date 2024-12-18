@@ -1,19 +1,26 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using Layers.Application.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using TestsExample.Helpers.Common
 @using TestsExample.Services.IdentityProvider
-@model IEnumerable<Layers.Application.Models.PostViewModel>
+@model TestsExample.Models.TheWallModel
 @inject IIdentityProvider IdentityProvider
 
 @{
     ViewData["Title"] = "Стена";
 }
 
-<h1 class="text-center">Стена</h1>
-<div class="container">
-    @foreach (var post in Model)
+<div class="d-flex flex-column align-items-center">
+    <h1 class="text-center">Стена</h1>
+
+    <form method="get" asp-action="TheWall" class="d-flex justify-content-between col-md-6 mb-3">
+        <select asp-for="Sort" asp-items="Html.GetEnumSelectList(typeof(Sort))" class="form-select me-2 w-auto"></select>
+        <button type="submit" class="btn btn-info">Применить</button>
+    </form>
+
+    @foreach (var post in Model.Posts)
     {
-        <form method="post" asp-controller="Home" asp-action="DeletePost" asp-route-postId="@post.Id">
-            <div class="card mb-4" style="margin: 0 auto; width: 50%;">
+        <form class="mb-4 col-md-6" method="post" asp-controller="Home" asp-action="DeletePost" asp-route-postId="@post.Id">
+            <div class="card">
                 <div class="card-header">
                     <strong>@post.Author</strong>
                     <small class="text-muted">@post.PublicationDateTime.ToLocalTime().ToString("g")</small>

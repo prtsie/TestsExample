@@ -1,8 +1,11 @@
 ﻿namespace TestsExample.Models;
 
 /// <summary> Пост </summary>
-public class Post : EntityBase
+public class Post
 {
+    /// <summary> Идентификатор </summary>
+    public Guid Id { get; set; } = Guid.NewGuid();
+    
     /// <summary> Заголовок </summary>
     public string Title { get; set; } = null!;
 

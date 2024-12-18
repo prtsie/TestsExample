@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TestsExample.Models;
+using Post = Layers.Infrastructure.DbModels.Post;
+using User = Layers.Infrastructure.DbModels.User;
 
 namespace Layers.Infrastructure.Database.Configuration;
 
@@ -18,6 +20,6 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
         builder.Property(p => p.UserId)
             .IsRequired();
 
-        builder.HasOne<User>().WithMany();
+        builder.HasOne<User>(p => p.User).WithMany(u => u.Posts);
     }
 }

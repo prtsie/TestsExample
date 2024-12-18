@@ -1,5 +1,4 @@
 ﻿using Layers.Application.Exceptions.Common;
-using TestsExample.Models;
 
 namespace Layers.Application.Exceptions.Database;
 
@@ -8,7 +7,7 @@ namespace Layers.Application.Exceptions.Database;
 /// </summary>
 /// <typeparam name="T">Тип сущности</typeparam>
 public class EntityNotFoundByIdException<T> : NotFoundException
-    where T : EntityBase
+    where T : class
 {
     public EntityNotFoundByIdException(Guid id) : base($"{typeof(T).Name} с идентификатором {id} не найден.") { }
 }

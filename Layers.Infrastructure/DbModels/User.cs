@@ -1,4 +1,4 @@
-﻿namespace TestsExample.Models;
+﻿namespace Layers.Infrastructure.DbModels;
 
 /// <summary>
 /// Пользователь
@@ -13,4 +13,7 @@ public class User
 
     /// <summary> Пароль пользователя </summary>
     public required string Password { get; set; }
+
+    /// <summary> Навигационное свойство с постами </summary>
+    public IEnumerable<Post> Posts { get; set; } = null!;
 }

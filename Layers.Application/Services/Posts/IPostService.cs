@@ -8,7 +8,7 @@ public interface IPostService
     /// <summary>
     /// Возвращает посты из БД
     /// </summary>
-    /// <param name="sort"></param>
+    /// <param name="sort"> Способ сортировки </param>
     /// <param name="cancellationToken"> Токен отмены</param>
     /// <returns> <see cref="IEnumerable{T}"/> </returns>
     Task<IEnumerable<PostViewModel>> GetPostsAsync(Sort sort, CancellationToken cancellationToken);

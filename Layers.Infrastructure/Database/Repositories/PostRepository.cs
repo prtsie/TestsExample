@@ -1,8 +1,9 @@
 ﻿using Layers.Application.Models;
 using Layers.Application.NeededServices.Database;
 using Layers.Application.NeededServices.Database.Repositories;
+using Layers.Infrastructure.DbModels;
+using Layers.Infrastructure.DbModels.MappingExtensions;
 using Microsoft.EntityFrameworkCore;
-using TestsExample.Models;
 
 namespace Layers.Infrastructure.Database.Repositories;
 
@@ -19,38 +20,68 @@ public class PostRepository : IPostRepository
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<Post>> Get(Sort sort, CancellationToken cancellationToken)
+    public async Task<IEnumerable<TestsExample.Models.Post>> Get(Sort sort, CancellationToken cancellationToken)
+    {
+        var result = await GetIQueryable(sort).ToArrayAsync(cancellationToken);
+        return result.Select(p => p.ToDomainPost());
+    }
+
+    /// <summary>
+    /// Возвращает IQueryable, который является ещё не выполненным запросом, но имеющим нужные фильтры и сортировки
+    /// </summary>
+    /// <returns> БД-модель постов </returns>
+    /// <remarks> Нужен для того, чтобы не писать несколько раз одно и то же </remarks>
+    private IQueryable<Post> GetIQueryable(Sort sort)
     {
         var posts = reader.Read<Post>();
         var sorted = sort switch
         {
-            Sort.Date => posts.OrderBy(p => p.PublicationDateTime),
-            Sort.DateReverse => posts.OrderByDescending(p => p.PublicationDateTime),
-            Sort.Author => posts
-                .Join(reader.Read<User>(), p => p.UserId, u => u.Id, (p, u) => new Tuple<Post, string>(p, u.Name))
-                .OrderBy(tuple => tuple.Item2)
-                .Select(tuple => tuple.Item1),
-            Sort.AuthorReverse => posts
-                .Join(reader.Read<User>(), p => p.UserId, u => u.Id, (p, u) => new Tuple<Post, string>(p, u.Name))
-                .OrderByDescending(tuple => tuple.Item2)
-                .Select(tuple => tuple.Item1),
+            Sort.Date => posts.OrderByDescending(p => p.PublicationDateTime),
+            Sort.DateReverse => posts.OrderBy(p => p.PublicationDateTime),
+            Sort.Author => posts.OrderBy(p => p.User.Name),
+            Sort.AuthorReverse => posts.OrderByDescending(p => p.User.Name),
             Sort.Title => posts.OrderBy(p => p.Title),
             Sort.TitleReverse => posts.OrderByDescending(p => p.Title),
             _ => throw new ArgumentOutOfRangeException(nameof(sort), sort, null)
         };
 
-        return await sorted.ToArrayAsync(cancellationToken);
+        return sorted;
     }
 
-    public async Task<Post?> GetById(Guid id, CancellationToken cancellationToken)
-        => await reader.Read<Post>().SingleOrDefaultAsync(p => p.Id == id, cancellationToken);
+    /// <inheritdoc />
+    public async Task<TestsExample.Models.Post?> GetById(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await reader.Read<Post>().SingleOrDefaultAsync(p => p.Id == id, cancellationToken);
+        return result?.ToDomainPost();
+    }
+
 
     /// <inheritdoc />
-    public void Add(Post post) => writer.Add(post);
+    public async Task<IEnumerable<Tuple<TestsExample.Models.Post, string>>> GetWithAuthorName(
+        Sort sort,
+        CancellationToken cancellationToken)
+    {
+        var result = await GetIQueryable(sort)
+            .Select(p => new Tuple<TestsExample.Models.Post, string>(p.ToDomainPost(), p.User.Name))
+            .ToArrayAsync(cancellationToken);
+        return result;
+    }
 
     /// <inheritdoc />
-    public void Update(Post post) => writer.Update(post);
+    public void Add(TestsExample.Models.Post post)
+    {
+        writer.Add(post.ToDbPost());
+    }
 
     /// <inheritdoc />
-    public void Delete(Post post) => writer.Remove(post);
+    public void Update(TestsExample.Models.Post post)
+    {
+        writer.Update(post.ToDbPost());
+    }
+
+    /// <inheritdoc />
+    public void Delete(TestsExample.Models.Post post)
+    {
+        writer.Remove(post.ToDbPost());
+    }
 }

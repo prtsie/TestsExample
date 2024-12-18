@@ -1,7 +1,8 @@
 ﻿using Layers.Application.NeededServices.Database;
 using Layers.Application.NeededServices.Database.Repositories;
+using Layers.Infrastructure.DbModels;
+using Layers.Infrastructure.DbModels.MappingExtensions;
 using Microsoft.EntityFrameworkCore;
-using TestsExample.Models;
 
 namespace Layers.Infrastructure.Database.Repositories;
 
@@ -18,12 +19,22 @@ public class UserRepository : IUserRepository
     }
 
     /// <inheritdoc />
-    public async Task<User?> GetByName(string name, CancellationToken cancellationToken)
-        => await reader.Read<User>().SingleOrDefaultAsync(u => u.Name == name, cancellationToken);
+    public async Task<TestsExample.Models.User?> GetByName(string name, CancellationToken cancellationToken)
+    {
+        var result = await reader.Read<User>().SingleOrDefaultAsync(u => u.Name == name, cancellationToken);
+        return result?.ToDomainUser();
+    }
 
     /// <inheritdoc />
-    public async Task<User?> GetById(Guid id, CancellationToken cancellationToken)
-        => await reader.Read<User>().SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
-
-    public void Add(User user) => writer.Add(user);
+    public async Task<TestsExample.Models.User?> GetById(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await reader.Read<User>().SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
+        return result?.ToDomainUser();
+    }
+    
+    /// <inheritdoc />
+    public void Add(TestsExample.Models.User user)
+    {
+        writer.Add(user.ToDbUser());
+    }
 }

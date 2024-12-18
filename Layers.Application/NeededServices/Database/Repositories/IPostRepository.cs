@@ -24,6 +24,12 @@ public interface IPostRepository
     /// <returns> Найденный пост или null </returns>
     Task<Post?> GetById(Guid id, CancellationToken cancellationToken);
 
+    /// <summary> Получить посты с именами авторов </summary>
+    /// <param name="sort"> Вариант сортировки </param>
+    /// <param name="cancellationToken"> Токен отмены </param>
+    /// <returns> Коллекцию кортежей, где первый элемент — пост, а второй — имя автора в виде строки</returns>
+    Task<IEnumerable<Tuple<Post, string>>> GetWithAuthorName(Sort sort, CancellationToken cancellationToken);
+
     /// <summary>
     /// Добавить пост в хранилище
     /// </summary>

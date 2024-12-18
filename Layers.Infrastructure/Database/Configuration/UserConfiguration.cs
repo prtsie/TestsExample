@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TestsExample.Models;
+using User = Layers.Infrastructure.DbModels.User;
 
 namespace Layers.Infrastructure.Database.Configuration;
 

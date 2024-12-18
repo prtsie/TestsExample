@@ -27,16 +27,9 @@ public class PostService : IPostService
 
     async Task<IEnumerable<PostViewModel>> IPostService.GetPostsAsync(Sort sort, CancellationToken cancellationToken)
     {
-        var posts = await postRepository.Get(sort, cancellationToken);
+        var posts = await postRepository.GetWithAuthorName(sort, cancellationToken);
 
-        var models = posts.Select(p =>
-        { //todo переписать
-            var author = userRepository.GetById(p.UserId, cancellationToken).Result;
-
-            return p.MapToPostViewModel(
-                author!.Name //TODO: обработка null
-                );
-        });
+        var models = posts.Select(tuple => tuple.Item1.MapToPostViewModel(tuple.Item2));
         
         return models;
     }
