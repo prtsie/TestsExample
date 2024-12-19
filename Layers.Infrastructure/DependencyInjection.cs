@@ -1,5 +1,7 @@
-﻿using Layers.Application.NeededServices.Database;
+﻿using Layers.Application.NeededServices.Common;
+using Layers.Application.NeededServices.Database;
 using Layers.Application.NeededServices.Database.Repositories;
+using Layers.Infrastructure.Common;
 using Layers.Infrastructure.Database;
 using Layers.Infrastructure.Database.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +27,8 @@ public static class DependencyInjection
         
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IPostRepository, PostRepository>();
+        
+        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         
         return services;
     }

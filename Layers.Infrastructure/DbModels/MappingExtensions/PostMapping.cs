@@ -11,6 +11,7 @@ public static class PostMapping
             Id = domainPost.Id,
             Title = domainPost.Title,
             Content = domainPost.Content,
+            PublicationDateTime = domainPost.PublicationDateTime,
             UserId = domainPost.UserId
         };
     }

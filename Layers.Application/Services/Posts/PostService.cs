@@ -2,6 +2,7 @@
 using Layers.Application.Exceptions.Database;
 using Layers.Application.Helpers.MappingExtensions;
 using Layers.Application.Models;
+using Layers.Application.NeededServices.Common;
 using Layers.Application.NeededServices.Database;
 using Layers.Application.NeededServices.Database.Repositories;
 using Layers.Application.Requests;
@@ -14,15 +15,18 @@ public class PostService : IPostService
     private readonly IPostRepository postRepository;
     private readonly IUserRepository userRepository;
     private readonly IUnitOfWork unitOfWork;
+    private readonly IDateTimeProvider dateTimeProvider;
 
     public PostService(
         IPostRepository postRepository,
         IUserRepository userRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IDateTimeProvider dateTimeProvider)
     {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.unitOfWork = unitOfWork;
+        this.dateTimeProvider = dateTimeProvider;
     }
 
     async Task<IEnumerable<PostViewModel>> IPostService.GetPostsAsync(Sort sort, CancellationToken cancellationToken)
@@ -38,7 +42,7 @@ public class PostService : IPostService
     {
         var user = await userRepository.GetById(userId, cancellationToken) ?? throw new NotAuthorizedException();
 
-        var post = request.MapToPost(user.Id);
+        var post = request.MapToPost(user.Id, dateTimeProvider);
         postRepository.Add(post);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);

@@ -20,7 +20,17 @@ public sealed class TestsSampleDbContext : DbContext, IGenericWriter, IGenericRe
 
     void IGenericWriter.Update<T>(T entity) => Update(entity);
 
-    void IGenericWriter.Remove<T>(T entity) => Remove(entity);
+    void IGenericWriter.Remove<T, TKey>(TKey key)
+    {
+        var tracked = Find<T>(key);
+        Remove(tracked!);
+    }
+
+    public void Remove<T>(Guid key) where T : class
+    {
+        var tracked = Find<T>(key);
+        Remove(tracked!);
+    }
 
     IQueryable<T> IGenericReader.Read<T>() => Set<T>();
 

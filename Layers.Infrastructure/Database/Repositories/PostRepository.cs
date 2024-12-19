@@ -82,6 +82,6 @@ public class PostRepository : IPostRepository
     /// <inheritdoc />
     public void Delete(TestsExample.Models.Post post)
     {
-        writer.Remove(post.ToDbPost());
+        writer.Remove<Post>(post.Id);
     }
 }
