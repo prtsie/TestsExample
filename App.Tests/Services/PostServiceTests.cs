@@ -73,8 +73,8 @@ public class PostServiceTests
         var userRepository = Mock.Of<IUserRepository>();
         var postRepositoryStub = new Mock<IPostRepository>();
         postRepositoryStub
-            .Setup(r => r.Get(It.IsAny<Sort>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => posts);
+            .Setup(r => r.GetWithAuthorName(It.IsAny<Sort>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(() => Enumerable.Range(0, 3).Select(i => new Tuple<Post, string>(posts[i], i.ToString())));
         var unitOfWork = Mock.Of<IUnitOfWork>();
         IPostService service = new PostService(postRepositoryStub.Object, userRepository, unitOfWork, new DateTimeProvider());
         
@@ -85,7 +85,7 @@ public class PostServiceTests
         var result = await service.GetPostsAsync(sort, CancellationToken.None);
         
         // Сортировка не важна, потому что ей занимается не сервис (хотя кто-то, может, и здесь бы написал тесты на сортировку ¯\_(ツ)_/¯)
-        result.Should().BeEquivalentTo(posts);
+        result.Should().BeEquivalentTo(posts.Select(p => new { Id = p.Id }));
     }
     
     // Здесь ещё тесты.

@@ -19,6 +19,4 @@ public class PostViewModel
 
     /// <summary> Дата публикации поста </summary>
     public DateTime PublicationDateTime { get; set; }
-
-    public Guid[] ImageIds { get; set; } = null!;
 }
